@@ -1,0 +1,7 @@
+/vendor/
+/build/
+/docs/
+/scripts/composer
+/scripts/jsonlint
+/scripts/phpunit
+/scripts/validate-json

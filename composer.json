@@ -1,0 +1,21 @@
+{
+    "name": "jimdo/ns-api-event-client-php",
+    "description": "Client for the Notification Service Event API",
+    "type": "project",
+    "require-dev": {
+        "phpunit/phpunit": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {"Jimdo\\Notification\\Event\\": "src/"}
+    },
+    "config": {
+       "bin-dir": "scripts"
+   },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hauke Stange",
+            "email": "hauke@jimdo.com"
+        }
+    ]
+}
