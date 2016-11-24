@@ -17,5 +17,8 @@
             "name": "Hauke Stange",
             "email": "hauke@jimdo.com"
         }
-    ]
+    ],
+    "require": {
+        "aws/aws-sdk-php": "^3.19"
+    }
 }
