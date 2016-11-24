@@ -1,4 +1,4 @@
-# Notification Service Event API Client
+# Notification Service Event API Client [![Build Status](https://travis-ci.com/Jimdo/ns-api-event-client-php.svg?token=xaHjcgAFSuULvgxb6q6z&branch=master)](https://travis-ci.com/Jimdo/ns-api-event-client-php)
 
 Client to send events to the Notification Service Event API.
 
