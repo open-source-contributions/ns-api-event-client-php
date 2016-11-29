@@ -6,7 +6,7 @@
         "phpunit/phpunit": "^5.4"
     },
     "autoload": {
-        "psr-4": {"Jimdo\\Notification\\Event\\": "src/"}
+        "psr-4": {"Jimdo\\Notification\\Event\\": ["src/", "tests/"]}
     },
     "config": {
        "bin-dir": "scripts"
