@@ -33,6 +33,7 @@ class ClientTest extends TestCase
         $client->send(
             'website',
             12345566,
+            'unique.event.identifier',
             'payment.received',
             [
                 'color' => 'red',
@@ -42,8 +43,9 @@ class ClientTest extends TestCase
 
         $requestBody = $this->getRequestBody();
 
-        $expectedRequestBody = '{"name":"payment.received","website":12345566,"created":' .
-            $created . ',"payload":{"color":"red","animal":"rabbit"}}';
+        $expectedRequestBody = '{"id":"unique.event.identifier","name":' .
+            '"payment.received","website":12345566,"created":' . $created .
+            ',"payload":{"color":"red","animal":"rabbit"}}';
 
         $this->assertEquals($expectedRequestBody, $requestBody);
     }
@@ -60,6 +62,7 @@ class ClientTest extends TestCase
 
         $client->website(
             12345566,
+            'unique.event.identifier',
             'payment.received',
             [
                 'color' => 'red',
@@ -69,8 +72,9 @@ class ClientTest extends TestCase
 
         $requestBody = $this->getRequestBody();
 
-        $expectedRequestBody = '{"name":"payment.received","website":12345566,"created":' .
-            $created . ',"payload":{"color":"red","animal":"rabbit"}}';
+        $expectedRequestBody = '{"id":"unique.event.identifier","name":' .
+            '"payment.received","website":12345566,"created":' . $created .
+            ',"payload":{"color":"red","animal":"rabbit"}}';
 
         $this->assertEquals($expectedRequestBody, $requestBody);
     }

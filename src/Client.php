@@ -60,22 +60,23 @@ class Client
      */
     public function __call($function, $arguments)
     {
-        list($target, $name, $payload) = $arguments;
-        return $this->send($function, $target, $name, $payload);
+        list($target, $id, $name, $payload) = $arguments;
+        return $this->send($function, $target, $id, $name, $payload);
     }
 
     /**
      * @param string $function Path fragment to lambda function
      * @param mixed $target Target identifier (website id or group descriptor)
+     * @param string $id Unique event identifier
      * @param string $name Event name
      * @param array $payload Arbitrary JSON payload
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function send($function, $target, $name, array $payload)
+    public function send($function, $target, $id, $name, array $payload)
     {
         return $this->httpClient->send(
             $this->signedRequest(
-                $this->request($function, $target, $name, $payload)
+                $this->request($function, $target, $id, $name, $payload)
             )
         );
     }
@@ -83,11 +84,12 @@ class Client
     /**
      * @param string $function Path fragment to lambda function
      * @param mixed $target Target identifier (website id or group descriptor)
+     * @param string $id Unique event identifier
      * @param string $name Event name
      * @param array $payload Arbitrary JSON payload
      * @return \GuzzleHttp\Psr7\Request
      */
-    private function request($function, $target, $name, array $payload)
+    private function request($function, $target, $id, $name, array $payload)
     {
         $created = $this->timestamp();
 
@@ -97,6 +99,7 @@ class Client
         ];
 
         $body = json_encode([
+            'id' => $id,
             'name' => $name,
             $function => $target,
             'created' => $created,
@@ -131,4 +134,3 @@ class Client
         return time();
     }
 }
-

@@ -35,8 +35,9 @@ Via the `send()` method:
 
 ```
 $client->send(
-    'website',                // Lambda function's path fragment of the endpoint 
+    'website',                // Lambda function's path fragment of the endpoint
     123456789,                // Website ID to send an event to
+    'unique.event.identifier' // A unique event identifier
     'payment.received',       // Namespace of the event
     [                         // Arbitrary payload in key value style
         'color' => 'red',
@@ -49,10 +50,11 @@ Via a *magic* method call:
 
 ```
 # The method name represents the Lambda
-# function's path fragment of the endpoint 
+# function's path fragment of the endpoint
 
 $client->website(
     123456789,                // Website ID to send an event to
+    'unique.event.identifier' // A unique event identifier
     'payment.received',       // Namespace of the event
     [                         // Arbitrary payload in key value style
         'color' => 'red',
