@@ -56,7 +56,7 @@ class Client
     /**
      * @param string $function Path fragment to lambda function
      * @param array $arguments As in send() but without $function
-     * @return \GuzzleHttp\Psr7\Request
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function __call($function, $arguments)
     {
@@ -70,7 +70,7 @@ class Client
      * @param string $id Unique event identifier
      * @param string $name Event name
      * @param array $payload Arbitrary JSON payload
-     * @return \GuzzleHttp\Psr7\Request
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function send($function, $target, $id, $name, array $payload)
     {
