@@ -91,7 +91,7 @@ class Client
      */
     private function request($function, $target, $id, $name, array $payload)
     {
-        $created = $this->timestamp();
+        $created = $this->timeInMilliseconds();
 
         $headers = [
             'X-Amz-Date' => date('c', $created),
@@ -129,8 +129,8 @@ class Client
     /**
      * @return int
      */
-    protected function timestamp()
+    protected function timeInMilliseconds()
     {
-        return time();
+        return (int)(microtime(true) * 1000);
     }
 }

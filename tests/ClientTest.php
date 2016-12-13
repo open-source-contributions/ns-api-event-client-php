@@ -25,10 +25,10 @@ class ClientTest extends TestCase
      */
     public function itShouldGenerateCorrectRequestBody()
     {
-        $created = time();
+        $created = (int)(microtime(true) * 1000);
 
-        $client = $this->client(['timestamp']);
-        $client->method('timestamp')->willReturn($created);
+        $client = $this->client(['timeInMilliseconds']);
+        $client->method('timeInMilliseconds')->willReturn($created);
 
         $client->send(
             'website',
@@ -55,10 +55,10 @@ class ClientTest extends TestCase
      */
     public function itShouldGenerateAlwaysIdOfTypeString()
     {
-        $created = time();
+        $created =  (int)(microtime(true) * 1000);
 
-        $client = $this->client(['timestamp']);
-        $client->method('timestamp')->willReturn($created);
+        $client = $this->client(['timeInMilliSeconds']);
+        $client->method('timeInMilliSeconds')->willReturn($created);
 
         $client->send(
             'website',
@@ -85,10 +85,10 @@ class ClientTest extends TestCase
      */
     public function itShouldGenerateAlwaysJSONObjectInPayload()
     {
-        $created = time();
+        $created =  (int)(microtime(true) * 1000);
 
-        $client = $this->client(['timestamp']);
-        $client->method('timestamp')->willReturn($created);
+        $client = $this->client(['timeInMilliSeconds']);
+        $client->method('timeInMilliSeconds')->willReturn($created);
 
         $client->send(
             'website',
@@ -112,10 +112,10 @@ class ClientTest extends TestCase
      */
     public function itShouldGenerateRequestForCorrectEndpointMagically()
     {
-        $created = time();
+        $created = (int)(microtime(true) * 1000);
 
-        $client = $this->client(['timestamp']);
-        $client->method('timestamp')->willReturn($created);
+        $client = $this->client(['timeInMilliseconds']);
+        $client->method('timeInMilliseconds')->willReturn($created);
 
         $client->website(
             12345566,
