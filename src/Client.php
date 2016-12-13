@@ -99,7 +99,7 @@ class Client
         ];
 
         $body = json_encode([
-            'id' => $id,
+            'id' => (string) $id,
             'name' => $name,
             $function => $target,
             'created' => $created,

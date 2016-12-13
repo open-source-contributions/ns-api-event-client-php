@@ -53,7 +53,37 @@ class ClientTest extends TestCase
     /**
      * @test
      */
-    public function itShouldGenerateRequestForCorrectEndpointMagicallyy()
+    public function itShouldGenerateAlwaysIdOfTypeString()
+    {
+        $created = time();
+
+        $client = $this->client(['timestamp']);
+        $client->method('timestamp')->willReturn($created);
+
+        $client->send(
+            'website',
+            12345566,
+            123,
+            'payment.received',
+            [
+                'color' => 'red',
+                'animal' => 'rabbit',
+            ]
+        );
+
+        $requestBody = $this->getRequestBody();
+
+        $expectedRequestBody = '{"id":"123","name":' .
+            '"payment.received","website":12345566,"created":' . $created .
+            ',"payload":{"color":"red","animal":"rabbit"}}';
+
+        $this->assertEquals($expectedRequestBody, $requestBody);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldGenerateRequestForCorrectEndpointMagically()
     {
         $created = time();
 
