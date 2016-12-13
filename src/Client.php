@@ -104,7 +104,7 @@ class Client
             $function => $target,
             'created' => $created,
             'payload' => $payload,
-        ]);
+        ], JSON_FORCE_OBJECT);
 
         return new Request(
             'POST',

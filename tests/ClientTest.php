@@ -83,6 +83,33 @@ class ClientTest extends TestCase
     /**
      * @test
      */
+    public function itShouldGenerateAlwaysJSONObjectInPayload()
+    {
+        $created = time();
+
+        $client = $this->client(['timestamp']);
+        $client->method('timestamp')->willReturn($created);
+
+        $client->send(
+            'website',
+            12345566,
+            123,
+            'payment.received',
+            []
+        );
+
+        $requestBody = $this->getRequestBody();
+
+        $expectedRequestBody = '{"id":"123","name":' .
+            '"payment.received","website":12345566,"created":' . $created .
+            ',"payload":{}}';
+
+        $this->assertEquals($expectedRequestBody, $requestBody);
+    }
+
+    /**
+     * @test
+     */
     public function itShouldGenerateRequestForCorrectEndpointMagically()
     {
         $created = time();
