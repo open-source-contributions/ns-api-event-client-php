@@ -23,6 +23,33 @@ class ClientTest extends TestCase
     /**
      * @test
      */
+    public function itShouldRemoveEmptyStringValuesFromPayload()
+    {
+        $created = (int)(microtime(true) * 1000);
+
+        $client = $this->client(['timeInMilliseconds']);
+        $client->method('timeInMilliseconds')->willReturn($created);
+
+        $client->send(
+            'website',
+            1234567,
+            'unique.event.identifier',
+            'payment.received',
+            [
+                'color' => 'red',
+                'keyWithEmptyValue' => '',
+                'number' => 0
+            ]
+        );
+
+        $requestBody = $this->getRequestBody();
+
+        $this->assertNotContains('keyWithEmptyValue', $requestBody);
+    }
+
+    /**
+     * @test
+     */
     public function itShouldGenerateCorrectRequestBody()
     {
         $created = (int)(microtime(true) * 1000);

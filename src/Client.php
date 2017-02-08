@@ -76,7 +76,13 @@ class Client
     {
         return $this->httpClient->send(
             $this->signedRequest(
-                $this->request($function, $target, $id, $name, $payload)
+                $this->request(
+                    $function,
+                    $target,
+                    $id,
+                    $name,
+                    $this->removeEmptyStringValues($payload)
+                )
             )
         );
     }
@@ -124,6 +130,19 @@ class Client
             $request,
             new Credentials($this->config->key(), $this->config->secret())
         );
+    }
+
+    /**
+     * @param arary $payload
+     * @return array Filtered payload
+     */
+    private function removeEmptyStringValues($payload) {
+        return array_filter($payload, function ($value) {
+            if ($value === '') {
+                return false;
+            }
+            return true;
+        });
     }
 
     /**
