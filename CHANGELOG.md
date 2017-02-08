@@ -18,5 +18,5 @@ and project adheres to [Semantic Versioning](http://semver.org/).
 - run `composer install` in docker container: `make bootstrap` from @alexzelenuyk
 - run `composer update` in docker container: `make update` from @alexzelenuyk
 
-[Unreleased]: https://github.com/Jimdo/ns-api-event-client-php/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/v0.1.0...v0.2.0
+[Unreleased]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.1.0...0.2.0
