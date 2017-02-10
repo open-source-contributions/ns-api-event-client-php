@@ -50,6 +50,48 @@ class ClientTest extends TestCase
     /**
      * @test
      */
+    public function itShouldRemoveEmptyStringValuesFromPayloadInChildArrays()
+    {
+        $created = (int)(microtime(true) * 1000);
+
+        $client = $this->client(['timeInMilliseconds']);
+        $client->method('timeInMilliseconds')->willReturn($created);
+
+        $client->send(
+            'website',
+            1234567,
+            'unique.event.identifier',
+            'payment.received',
+            [
+                'color' => 'red',
+                'keyWithEmptyChild' => [
+                  'keyWithEmptyValue' => ''
+                ],
+                'keyWithEmptyChildInChild' => [
+                  'keyWithEmptyChild' => [
+                    'secondKeyWithEmptyValue' => ''
+                  ],
+                ],
+                'keyWithEmptyArray' => [],
+                'number' => 0
+            ]
+        );
+
+        $requestBody = $this->getRequestBody();
+
+        $this->assertContains('color', $requestBody);
+        $this->assertContains('number', $requestBody);
+
+        $this->assertNotContains('keyWithEmptyValue', $requestBody);
+        $this->assertNotContains('secondKeyWithEmptyValue', $requestBody);
+        $this->assertNotContains('keyWithEmptyArray', $requestBody);
+        $this->assertNotContains('keyWithEmptyChild', $requestBody);
+        $this->assertNotContains('keyWithEmptyChildInChild', $requestBody);
+    }
+
+    /**
+     * @test
+     */
     public function itShouldGenerateCorrectRequestBody()
     {
         $created = (int)(microtime(true) * 1000);

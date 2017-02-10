@@ -81,7 +81,7 @@ class Client
                     $target,
                     $id,
                     $name,
-                    $this->removeEmptyStringValues($payload)
+                    $this->removeEmptyKeys($payload)
                 )
             )
         );
@@ -133,16 +133,19 @@ class Client
     }
 
     /**
-     * @param arary $payload
-     * @return array Filtered payload
+     * @param arary $array
+     * @return array Filtered array
      */
-    private function removeEmptyStringValues($payload) {
-        return array_filter($payload, function ($value) {
-            if ($value === '') {
-                return false;
+    private function removeEmptyKeys($array) {
+        $callback = function($item) use (&$callback) {
+            if (is_array($item)) {
+                return array_filter($item, $callback);
             }
-            return true;
-        });
+
+            return is_numeric($item) || !empty($item);
+        };
+
+        return array_filter($array, $callback);
     }
 
     /**

@@ -16,6 +16,10 @@
         {
             "name": "Hauke Stange",
             "email": "hauke@jimdo.com"
+        },
+        {
+            "name": "Sebastian Müller",
+            "email": "sbstjn@jimdo.com"
         }
     ],
     "require": {
