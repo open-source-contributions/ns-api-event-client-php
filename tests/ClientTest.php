@@ -10,10 +10,14 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 
+use Aws\Credentials\Credentials;
+use Aws\Sqs\SqsClient;
 
 class ClientTest extends TestCase
 {
     private $requests;
+
+    private $cannedResponseForAllSqsRequests = '<?xml version="1.0"?><SendMessageResponse xmlns="http://queue.amazonaws.com/doc/2012-11-05/"><SendMessageResult><MessageId>95809e0e-2cf7-44cc-bf44-1d9ffbe7ec3c</MessageId><MD5OfMessageBody>961770dca2cb59402568f975513228fe</MD5OfMessageBody></SendMessageResult><ResponseMetadata><RequestId>19293607-af0f-596d-806d-6744cd17de91</RequestId></ResponseMetadata></SendMessageResponse>';
 
     protected function setUp()
     {
@@ -42,7 +46,7 @@ class ClientTest extends TestCase
             ]
         );
 
-        $requestBody = $this->getRequestBody();
+        $requestBody = $this->getMessageBody();
 
         $this->assertNotContains('keyWithEmptyValue', $requestBody);
     }
@@ -77,7 +81,7 @@ class ClientTest extends TestCase
             ]
         );
 
-        $requestBody = $this->getRequestBody();
+        $requestBody = $this->getMessageBody();
 
         $this->assertContains('color', $requestBody);
         $this->assertContains('number', $requestBody);
@@ -110,7 +114,7 @@ class ClientTest extends TestCase
             ]
         );
 
-        $requestBody = $this->getRequestBody();
+        $requestBody = $this->getMessageBody();
 
         $expectedRequestBody = '{"id":"unique.event.identifier","name":' .
             '"payment.received","website":12345566,"created":' . $created .
@@ -140,7 +144,7 @@ class ClientTest extends TestCase
             ]
         );
 
-        $requestBody = $this->getRequestBody();
+        $requestBody = $this->getMessageBody();
 
         $expectedRequestBody = '{"id":"123","name":' .
             '"payment.received","website":12345566,"created":' . $created .
@@ -167,7 +171,7 @@ class ClientTest extends TestCase
             []
         );
 
-        $requestBody = $this->getRequestBody();
+        $requestBody = $this->getMessageBody();
 
         $expectedRequestBody = '{"id":"123","name":' .
             '"payment.received","website":12345566,"created":' . $created .
@@ -179,7 +183,7 @@ class ClientTest extends TestCase
     /**
      * @test
      */
-    public function itShouldGenerateRequestForCorrectEndpointMagically()
+    public function itShouldGenerateRequestForCorrectQueueUrlMagically()
     {
         $created = (int)(microtime(true) * 1000);
 
@@ -196,7 +200,7 @@ class ClientTest extends TestCase
             ]
         );
 
-        $requestBody = $this->getRequestBody();
+        $requestBody = $this->getMessageBody();
 
         $expectedRequestBody = '{"id":"unique.event.identifier","name":' .
             '"payment.received","website":12345566,"created":' . $created .
@@ -212,7 +216,7 @@ class ClientTest extends TestCase
     private function client($methodsToStub)
     {
         return $this->getMockBuilder('Jimdo\Notification\Event\Client')
-            ->setConstructorArgs([$this->config(), $this->httpClient(), new DummySignature()])
+            ->setConstructorArgs([$this->config(), $this->sqsClient()])
             ->setMethods($methodsToStub)
             ->getMock();
     }
@@ -222,15 +226,13 @@ class ClientTest extends TestCase
      */
     private function config()
     {
-        $endpoint = 'https://my-lambda-endpoint.execute-api.eu-west-1.amazonaws.com';
-        $staging = 'v1';
+        $queueUrl = 'https://sqs.eu-west-1.amazonaws.com/1234567890/ns-api-events';
         $awsKey = 'AWS_ACCESS_KEY';
         $awsSecret = 's0m3aw5s3cr31';
         $awsRegion = 'eu-west-1';
 
         return new Client\Config(
-            $endpoint,
-            $staging,
+            $queueUrl,
             $awsKey,
             $awsSecret,
             $awsRegion
@@ -240,23 +242,39 @@ class ClientTest extends TestCase
     /**
      * @return \GuzzleHttp\Client
      */
-    private function httpClient()
+    private function handlers()
     {
         $stack = HandlerStack::create(new MockHandler([
-            new Response(200)
+            new Response(200, [], $this->cannedResponseForAllSqsRequests)
         ]));
 
         $history = Middleware::history($this->requests);
         $stack->push($history);
 
-        return new HttpClient(['handler' => $stack]);
+        return $stack;
+    }
+
+    /**
+     * @return \Aws\Sqs\SqsClient
+     */
+    private function sqsClient()
+    {
+        return  new SqsClient([
+            'credentials' => new Credentials($this->config()->key(), $this->config()->secret()),
+            'region' => $this->config()->region(),
+            'version' => Client::SQS_API_VERSION,
+            'http_handler' => $this->handlers(),
+        ]);
     }
 
     /**
      * @return string
      */
-    private function getRequestBody()
+    private function getMessageBody()
     {
-        return (string) $this->requests[0]['request']->getBody();
+        $requestBody = (string) $this->requests[0]['request']->getBody();
+        $queryParams = [];
+        parse_str(urldecode($requestBody), $queryParams);
+        return $queryParams['MessageBody'];
     }
 }

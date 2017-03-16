@@ -1,10 +1,9 @@
 # Notification Service Event API Client [![Build Status](https://travis-ci.com/Jimdo/ns-api-event-client-php.svg?token=xaHjcgAFSuULvgxb6q6z&branch=master)](https://travis-ci.com/Jimdo/ns-api-event-client-php)
 
-The client's task is to talk to our *Notification Service Event API*. Therefore it encapsulates the following steps:
+The client's task is to put events in our *Notification Service SQS queue*. It accomplishes the following things:
 
-  - construct a request for the AWS API Gateway
-  - sign the request with an *AWS SignatureV4*
-  - send the request to the AWS API Gateway
+  - assemble the event data and create the message body for the SQS request
+  - use the SQS client to put the event data into the queue
 
 ## Usage
 
@@ -13,30 +12,27 @@ To obtain a client use the factory method:
 ```
 use Jimdo\Notification\Event\Client;
 
-$endpoint = 'https://my-lambda-endpoint.execute-api.eu-west-1.amazonaws.com';
-$stage = 'v1';
+$queueUrl = 'https://sqs.eu-west-1.amazonaws.com/1234567890/ns-api-events';
 $awsAccessKey = 'MY_ACCESS_KEY';
 $awsSecretKey = 'mys3cr3tk3y';
 $awsRegion = 'eu-west-1';
 
 $client = Client::create(
-     $endpoint,
-     $stage,
+     $queueUrl,
      $awsAccessKey,
      $awsSecretKey,
      $awsRegion
 );
-
 ```
 
-### To send an event to the API Gateway you have to options
+### To send an event to the SQS queue you have two options
 
 Via the `send()` method:
 
 ```
 $client->send(
-    'website',                // Lambda function's path fragment of the endpoint
-    123456789,                // Website ID to send an event to
+    'website',                // Target of the notification (website or group)
+    123456789,                // Target identifier (website id or group descriptor)
     'unique.event.identifier' // A unique event identifier
     'payment.received',       // Namespace of the event
     [                         // Arbitrary payload in key value style
@@ -49,8 +45,7 @@ $client->send(
 Via a *magic* method call:
 
 ```
-# The method name represents the Lambda
-# function's path fragment of the endpoint
+# The method name represents the target of the notification (website or group)
 
 $client->website(
     123456789,                // Website ID to send an event to
@@ -62,6 +57,9 @@ $client->website(
     ]
 );
 ```
+
+**Note:** Although this client is capable of sending events to arbitrary targets the
+*Notification Service* currently only supports the target `website`.
 
 ## Development
 
