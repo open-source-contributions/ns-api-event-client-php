@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.0] - 2017-03-16
+### Changed
+- write events directly into the SQS queue from @partyschaum
+
 ## [0.2.1] - 2017-02-10
 ### Changed
 - remove key value pairs with empty value in nested keys in payload from @sbstjn
@@ -18,5 +22,7 @@ and project adheres to [Semantic Versioning](http://semver.org/).
 - run `composer install` in docker container: `make bootstrap` from @alexzelenuyk
 - run `composer update` in docker container: `make update` from @alexzelenuyk
 
-[Unreleased]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.2.1...0.3.0
+[0.2.1]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.1.0...0.2.0
