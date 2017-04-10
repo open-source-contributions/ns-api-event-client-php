@@ -28,7 +28,7 @@ Client can enforce empty array to be an object by explicitly type casting, for e
 - run `composer update` in docker container: `make update` from @alexzelenuyk
 
 [Unreleased]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.3.1...HEAD
-[0.3.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.3.0...0.3.1
+[0.3.1]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.2.1...0.3.0
 [0.2.1]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.1.0...0.2.0
