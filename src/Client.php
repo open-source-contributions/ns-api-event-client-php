@@ -100,8 +100,8 @@ class Client
             'name' => $name,
             $target => $targetId,
             'created' => $this->timeInMilliseconds(),
-            'payload' => $payload,
-        ], JSON_FORCE_OBJECT);
+            'payload' => empty($payload) ? (object)[] : $payload,
+        ]);
     }
 
     /**

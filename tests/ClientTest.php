@@ -156,7 +156,7 @@ class ClientTest extends TestCase
     /**
      * @test
      */
-    public function itShouldGenerateAlwaysJSONObjectInPayload()
+    public function itShouldGenerateAlwaysJSONObjectFromEmptyPayload()
     {
         $created =  (int)(microtime(true) * 1000);
 
@@ -176,6 +176,36 @@ class ClientTest extends TestCase
         $expectedRequestBody = '{"id":"123","name":' .
             '"payment.received","website":12345566,"created":' . $created .
             ',"payload":{}}';
+
+        $this->assertEquals($expectedRequestBody, $requestBody);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldGenerateCorrectJsonObjectFromPayloadWithMixedContent()
+    {
+        $created =  (int)(microtime(true) * 1000);
+
+        $client = $this->client(['timeInMilliSeconds']);
+        $client->method('timeInMilliSeconds')->willReturn($created);
+
+        $client->send(
+            'website',
+            12345566,
+            123,
+            'payment.received',
+            [
+                'array' => ['item1', 'item2'],
+                'object' => (object)['item1', 'item2'],
+            ]
+        );
+
+        $requestBody = $this->getMessageBody();
+
+        $expectedRequestBody = '{"id":"123","name":' .
+            '"payment.received","website":12345566,"created":' . $created .
+            ',"payload":{"array":["item1","item2"],"object":{"0":"item1","1":"item2"}}}';
 
         $this->assertEquals($expectedRequestBody, $requestBody);
     }

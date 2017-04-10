@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.1] - 2017-04-10
+### Fixed
+- Don't enforce payload to be an json object. 
+Client can enforce empty array to be an object by explicitly type casting, for example: ```(object)[]``` from @alexzelenuyk 
+
 ## [0.3.0] - 2017-03-16
 ### Changed
 - write events directly into the SQS queue from @partyschaum
@@ -22,7 +27,8 @@ and project adheres to [Semantic Versioning](http://semver.org/).
 - run `composer install` in docker container: `make bootstrap` from @alexzelenuyk
 - run `composer update` in docker container: `make update` from @alexzelenuyk
 
-[Unreleased]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.3.1...HEAD
+[0.3.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.2.1...0.3.0
 [0.2.1]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/Jimdo/ns-api-event-client-php/compare/0.1.0...0.2.0
