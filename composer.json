@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "aws/aws-sdk-php": "^3.19",
-        "guzzlehttp/guzzle": "^6.2"
+        "aws/aws-sdk-php": "^3.128",
+        "guzzlehttp/guzzle": "^6.5"
     }
 }
