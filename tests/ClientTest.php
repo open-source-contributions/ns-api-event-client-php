@@ -4,7 +4,6 @@ namespace Jimdo\Notification\Event;
 
 use PHPUnit\Framework\TestCase;
 
-use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Middleware;

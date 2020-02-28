@@ -8,7 +8,7 @@ tests: ## Execute test suite and create code coverage report
 	docker run -v $(shell pwd):/app --rm php:7.3 /app/scripts/phpunit /app/tests/
 
 update: ## Update composer packages
-	docker run --rm -v $(shell pwd):/app composer/composer update
+	docker run --rm -v $(shell pwd):/app composer update
 
 bootstrap: ## Install composer
-	docker run --rm -v $(shell pwd):/app composer/composer install
+	docker run --rm -v $(shell pwd):/app composer install
